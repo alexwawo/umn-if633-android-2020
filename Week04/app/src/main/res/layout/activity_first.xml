@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FirstActivity">
+
+    <EditText
+        android:id="@+id/etFirstActivityData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/etFirstActivityDataHint"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnSendDataToSecondActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sendDataToSecondActivity"
+        android:text="@string/btnSendDataToSecondActivity" />
+
+    <TextView
+        android:id="@+id/tvDataFromSATitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tvDataFromSATitle" />
+
+    <TextView
+        android:id="@+id/tvDataFromSA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tvDataFromSA" />
+</LinearLayout>

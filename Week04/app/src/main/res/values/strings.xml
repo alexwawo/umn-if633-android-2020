@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Demo Week 04</string>
+
+    <!-- Activity Label -->
+    <string name="activity_lifecycle">Activity Lifecycle</string>
+    <string name="activity_implicit_intent">Implicit Intent</string>
+    <string name="activity_first">First Activity</string>
+    <string name="activity_second">Second Activity</string>
+    <string name="activity_fragment_via_layout">Fragment via Layout</string>
+    <string name="activity_fragment_via_programmatic">Fragment via Programmatic</string>
+
+    <!-- activity_lifecycle -->
+    <string name="tvActivityLifecycle">Perhatikan LOG "LIFECYCLE" pada tab Logcat.</string>
+
+    <!-- activity_implicit_intent -->
+    <string name="tvImplicitIntentExamples">Simple Exampes</string>
+    <string name="btnOpenWebUMN">Open umn.ac.id</string>
+    <string name="btnCallUMN">Call UMN</string>
+    <string name="tvSendImplicitIntentWithData">Send Implicit Intent with Data</string>
+    <string name="etWebURLHint">http://example.com</string>
+    <string name="btnBrowse">Browse</string>
+    <string name="etPhoneNumberHint">08xxx...</string>
+    <string name="btnCall">Call</string>
+
+    <!-- activity_first -->
+    <string name="etFirstActivityDataHint">Send something to Second Activity...</string>
+    <string name="btnSendDataToSecondActivity">Send Data to Second Activity</string>
+    <string name="tvDataFromSATitle">Data From Second Activity: </string>
+    <string name="tvDataFromSA">N/A</string>
+
+    <!-- activity_second -->
+    <string name="etSecondActivityDataHint">Send something back to First Activity...</string>
+    <string name="btnSendDataBackToFirstActivity">Send Back To First Activity</string>
+    <string name="tvDataFromFATitle">Data From First Activity: </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.ac.umn.week04">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".FragmentViaProgrammaticActivity"
+            android:label="@string/activity_fragment_via_programmatic"></activity>
+        <activity
+            android:name=".FragmentViaLayoutActivity"
+            android:label="@string/activity_fragment_via_layout" />
+        <activity
+            android:name=".SecondActivity"
+            android:label="@string/activity_second" />
+        <activity
+            android:name=".FirstActivity"
+            android:label="@string/activity_first" />
+        <activity
+            android:name=".ImplicitIntentActivity"
+            android:label="@string/activity_implicit_intent" />
+        <activity
+            android:name=".LifecycleActivity"
+            android:label="@string/activity_lifecycle" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
