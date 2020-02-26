@@ -18,7 +18,7 @@
         android:id="@+id/btnOpenWebUMN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="oepnWebUMN"
+        android:onClick="openWebUMN"
         android:text="@string/btnOpenWebUMN" />
 
     <Button

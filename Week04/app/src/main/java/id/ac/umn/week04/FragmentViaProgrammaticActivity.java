@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.widget.FrameLayout;
 
 public class FragmentViaProgrammaticActivity extends AppCompatActivity {
 
@@ -17,8 +18,8 @@ public class FragmentViaProgrammaticActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        Fragment blueFragment = new BlueFragment();
-        ft.replace(R.id.frame1, blueFragment);
+        Fragment blueFragment = new HahaFragment();
+        ft.add(R.id.frame1, blueFragment);
 
         Fragment redFragment = new RedFragment();
         ft.replace(R.id.frame2, redFragment);
