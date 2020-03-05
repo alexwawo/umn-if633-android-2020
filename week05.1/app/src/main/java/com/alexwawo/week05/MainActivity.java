@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 // mRect.set(LEFT, TOP, RIGHT, BOTTOM);
                 mRect.set(mOffset, mOffset, vWidth - mOffset, vHeight - mOffset);
                 mCanvas.drawRect(mRect, mPaint);
-                mOffset += OFFSET;
+                mOffset += 50;
             } else {
                 Log.d("DEBUG", "else");
                 mPaint.setColor(mColorAccent);
