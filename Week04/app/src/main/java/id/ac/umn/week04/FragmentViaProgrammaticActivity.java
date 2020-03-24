@@ -23,6 +23,7 @@ public class FragmentViaProgrammaticActivity extends AppCompatActivity {
 
         Fragment redFragment = new RedFragment();
         ft.replace(R.id.frame2, redFragment);
+        ft.remove(redFragment);
 
         ft.commit();
     }
