@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- product id(pid) will be hidden, used to pass to the other activity -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pid"
+        android:visibility="gone"/>
+
+    <!-- name label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pName"
+        android:padding="15dp"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

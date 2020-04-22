@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>AndroidManifest.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,0); font-style: italic; }
+.s1 { color: rgb(0,0,255); font-weight: bold; }
+.s2 { color: rgb(0,0,0); }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,128); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+AndroidManifest.xml</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<a name="l1"><span class="ln">1    </span></a><span class="s0">&lt;?</span><span class="s1">xml version=</span><span class="s3">&quot;1.0&quot; </span><span class="s1">encoding=</span><span class="s3">&quot;utf-8&quot;</span><span class="s0">?&gt;</span><span class="s2"> 
+<a name="l2"><span class="ln">2    </span></a>&lt;</span><span class="s4">manifest </span><span class="s1">xmlns:android=</span><span class="s3">&quot;http://schemas.android.com/apk/res/android&quot;</span><span class="s2"> 
+<a name="l3"><span class="ln">3    </span></a>    </span><span class="s1">package=</span><span class="s3">&quot;com.alexwawo.w12androidphpmysql&quot;</span><span class="s2">&gt; 
+<a name="l4"><span class="ln">4    </span></a> 
+<a name="l5"><span class="ln">5    </span></a>    &lt;</span><span class="s4">uses-permission </span><span class="s1">android:name=</span><span class="s3">&quot;android.permission.INTERNET&quot; </span><span class="s2">/&gt; 
+<a name="l6"><span class="ln">6    </span></a> 
+<a name="l7"><span class="ln">7    </span></a>    &lt;</span><span class="s4">application</span><span class="s2"> 
+<a name="l8"><span class="ln">8    </span></a>        </span><span class="s1">android:allowBackup=</span><span class="s3">&quot;true&quot;</span><span class="s2"> 
+<a name="l9"><span class="ln">9    </span></a>        </span><span class="s1">android:icon=</span><span class="s3">&quot;@mipmap/ic_launcher&quot;</span><span class="s2"> 
+<a name="l10"><span class="ln">10   </span></a>        </span><span class="s1">android:label=</span><span class="s3">&quot;@string/app_name&quot;</span><span class="s2"> 
+<a name="l11"><span class="ln">11   </span></a>        </span><span class="s1">android:roundIcon=</span><span class="s3">&quot;@mipmap/ic_launcher_round&quot;</span><span class="s2"> 
+<a name="l12"><span class="ln">12   </span></a>        </span><span class="s1">android:supportsRtl=</span><span class="s3">&quot;true&quot;</span><span class="s2"> 
+<a name="l13"><span class="ln">13   </span></a>        </span><span class="s1">android:theme=</span><span class="s3">&quot;@style/AppTheme&quot;</span><span class="s2">&gt; 
+<a name="l14"><span class="ln">14   </span></a>        &lt;</span><span class="s4">activity </span><span class="s1">android:name=</span><span class="s3">&quot;.MainActivity&quot;</span><span class="s2">&gt; 
+<a name="l15"><span class="ln">15   </span></a>            &lt;</span><span class="s4">intent-filter</span><span class="s2">&gt; 
+<a name="l16"><span class="ln">16   </span></a>                &lt;</span><span class="s4">action </span><span class="s1">android:name=</span><span class="s3">&quot;android.intent.action.MAIN&quot; </span><span class="s2">/&gt; 
+<a name="l17"><span class="ln">17   </span></a>                &lt;</span><span class="s4">category </span><span class="s1">android:name=</span><span class="s3">&quot;android.intent.category.LAUNCHER&quot; </span><span class="s2">/&gt; 
+<a name="l18"><span class="ln">18   </span></a>            &lt;/</span><span class="s4">intent-filter</span><span class="s2">&gt; 
+<a name="l19"><span class="ln">19   </span></a>        &lt;/</span><span class="s4">activity</span><span class="s2">&gt; 
+<a name="l20"><span class="ln">20   </span></a>        &lt;</span><span class="s4">activity </span><span class="s1">android:name=</span><span class="s3">&quot;.NewProductActivity&quot;</span><span class="s2"> 
+<a name="l21"><span class="ln">21   </span></a>                  </span><span class="s1">android:label=</span><span class="s3">&quot;New Product&quot; </span><span class="s2">/&gt; 
+<a name="l22"><span class="ln">22   </span></a>        &lt;</span><span class="s4">activity </span><span class="s1">android:name=</span><span class="s3">&quot;.EditProductActivity&quot;</span><span class="s2"> 
+<a name="l23"><span class="ln">23   </span></a>                  </span><span class="s1">android:label=</span><span class="s3">&quot;Edit Product&quot; </span><span class="s2">/&gt; 
+<a name="l24"><span class="ln">24   </span></a>        &lt;</span><span class="s4">activity </span><span class="s1">android:name=</span><span class="s3">&quot;.AllProductsActivity&quot;</span><span class="s2"> 
+<a name="l25"><span class="ln">25   </span></a>                  </span><span class="s1">android:label=</span><span class="s3">&quot;All Products&quot;</span><span class="s2">&gt;&lt;/</span><span class="s4">activity</span><span class="s2">&gt; 
+<a name="l26"><span class="ln">26   </span></a>    &lt;/</span><span class="s4">application</span><span class="s2">&gt; 
+<a name="l27"><span class="ln">27   </span></a> 
+<a name="l28"><span class="ln">28   </span></a>&lt;/</span><span class="s4">manifest</span><span class="s2">&gt;</span></pre>
+</body>
+</html>

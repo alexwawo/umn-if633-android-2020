@@ -1,0 +1,203 @@
+<html>
+<head>
+<title>AllProductsActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+AllProductsActivity.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">com.alexwawo.w12androidphpmysql; 
+<a name="l2"><span class="ln">2    </span></a> 
+<a name="l3"><span class="ln">3    </span></a></span><span class="s0">import </span><span class="s1">android.app.ListActivity; 
+<a name="l4"><span class="ln">4    </span></a></span><span class="s0">import </span><span class="s1">android.app.ProgressDialog; 
+<a name="l5"><span class="ln">5    </span></a></span><span class="s0">import </span><span class="s1">android.content.Intent; 
+<a name="l6"><span class="ln">6    </span></a></span><span class="s0">import </span><span class="s1">android.os.AsyncTask; 
+<a name="l7"><span class="ln">7    </span></a></span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+<a name="l8"><span class="ln">8    </span></a></span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+<a name="l9"><span class="ln">9    </span></a></span><span class="s0">import </span><span class="s1">android.util.Log; 
+<a name="l10"><span class="ln">10   </span></a></span><span class="s0">import </span><span class="s1">android.util.Pair; 
+<a name="l11"><span class="ln">11   </span></a></span><span class="s0">import </span><span class="s1">android.view.View; 
+<a name="l12"><span class="ln">12   </span></a></span><span class="s0">import </span><span class="s1">android.widget.AdapterView; 
+<a name="l13"><span class="ln">13   </span></a></span><span class="s0">import </span><span class="s1">android.widget.ListAdapter; 
+<a name="l14"><span class="ln">14   </span></a></span><span class="s0">import </span><span class="s1">android.widget.ListView; 
+<a name="l15"><span class="ln">15   </span></a></span><span class="s0">import </span><span class="s1">android.widget.SimpleAdapter; 
+<a name="l16"><span class="ln">16   </span></a></span><span class="s0">import </span><span class="s1">android.widget.TextView; 
+<a name="l17"><span class="ln">17   </span></a> 
+<a name="l18"><span class="ln">18   </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONArray; 
+<a name="l19"><span class="ln">19   </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONException; 
+<a name="l20"><span class="ln">20   </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONObject; 
+<a name="l21"><span class="ln">21   </span></a> 
+<a name="l22"><span class="ln">22   </span></a></span><span class="s0">import </span><span class="s1">java.io.IOException; 
+<a name="l23"><span class="ln">23   </span></a></span><span class="s0">import </span><span class="s1">java.util.ArrayList; 
+<a name="l24"><span class="ln">24   </span></a></span><span class="s0">import </span><span class="s1">java.util.HashMap; 
+<a name="l25"><span class="ln">25   </span></a></span><span class="s0">import </span><span class="s1">java.util.List; 
+<a name="l26"><span class="ln">26   </span></a> 
+<a name="l27"><span class="ln">27   </span></a></span><span class="s0">public class </span><span class="s1">AllProductsActivity </span><span class="s0">extends </span><span class="s1">ListActivity { 
+<a name="l28"><span class="ln">28   </span></a> 
+<a name="l29"><span class="ln">29   </span></a>    </span><span class="s2">// progress dialog</span><span class="s1"> 
+<a name="l30"><span class="ln">30   </span></a>    </span><span class="s0">private </span><span class="s1">ProgressDialog pDialog; 
+<a name="l31"><span class="ln">31   </span></a>    </span><span class="s2">// creating JSON parser object</span><span class="s1"> 
+<a name="l32"><span class="ln">32   </span></a>    JSONParser jParser = </span><span class="s0">new </span><span class="s1">JSONParser(); 
+<a name="l33"><span class="ln">33   </span></a>    ArrayList&lt;HashMap&lt;String, String&gt;&gt; productsList; 
+<a name="l34"><span class="ln">34   </span></a>    </span><span class="s2">// url to get all products list</span><span class="s1"> 
+<a name="l35"><span class="ln">35   </span></a>    </span><span class="s0">private static </span><span class="s1">String url_all_products = </span><span class="s3">&quot;http://10.0.2.2/www/android/w12/read_all_products.php&quot;</span><span class="s1">; 
+<a name="l36"><span class="ln">36   </span></a>    </span><span class="s2">//private static String url_all_products = &quot;http://android.ruangdosen.com/read_all_products.php&quot;;</span><span class="s1"> 
+<a name="l37"><span class="ln">37   </span></a> 
+<a name="l38"><span class="ln">38   </span></a>    </span><span class="s2">// JSON node names</span><span class="s1"> 
+<a name="l39"><span class="ln">39   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_SUCCESS = </span><span class="s3">&quot;success&quot;</span><span class="s1">; 
+<a name="l40"><span class="ln">40   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_PRODUCTS = </span><span class="s3">&quot;products&quot;</span><span class="s1">; 
+<a name="l41"><span class="ln">41   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_PID = </span><span class="s3">&quot;pid&quot;</span><span class="s1">; 
+<a name="l42"><span class="ln">42   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_NAME = </span><span class="s3">&quot;name&quot;</span><span class="s1">; 
+<a name="l43"><span class="ln">43   </span></a> 
+<a name="l44"><span class="ln">44   </span></a>    </span><span class="s2">//products JSONArray</span><span class="s1"> 
+<a name="l45"><span class="ln">45   </span></a>    JSONArray products = </span><span class="s0">null</span><span class="s1">; 
+<a name="l46"><span class="ln">46   </span></a> 
+<a name="l47"><span class="ln">47   </span></a>    </span><span class="s2">// background AsyncTask to load all products by making HTTP request</span><span class="s1"> 
+<a name="l48"><span class="ln">48   </span></a>    </span><span class="s0">class </span><span class="s1">LoadAllProducts </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;String, String, String&gt;{ 
+<a name="l49"><span class="ln">49   </span></a>        </span><span class="s2">// before starting background thread, show progress dialog</span><span class="s1"> 
+<a name="l50"><span class="ln">50   </span></a>        @Override 
+<a name="l51"><span class="ln">51   </span></a>        </span><span class="s0">protected void </span><span class="s1">onPreExecute(){ 
+<a name="l52"><span class="ln">52   </span></a>            </span><span class="s0">super</span><span class="s1">.onPreExecute(); 
+<a name="l53"><span class="ln">53   </span></a>            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;onPreExecute&quot;</span><span class="s1">); 
+<a name="l54"><span class="ln">54   </span></a>            pDialog = </span><span class="s0">new </span><span class="s1">ProgressDialog(AllProductsActivity.</span><span class="s0">this</span><span class="s1">); 
+<a name="l55"><span class="ln">55   </span></a>            pDialog.setMessage(</span><span class="s3">&quot;Loading Products, Please wait...&quot;</span><span class="s1">); 
+<a name="l56"><span class="ln">56   </span></a>            pDialog.setIndeterminate(</span><span class="s0">false</span><span class="s1">); 
+<a name="l57"><span class="ln">57   </span></a>            pDialog.setCancelable(</span><span class="s0">false</span><span class="s1">); 
+<a name="l58"><span class="ln">58   </span></a>            pDialog.show(); 
+<a name="l59"><span class="ln">59   </span></a>        } 
+<a name="l60"><span class="ln">60   </span></a> 
+<a name="l61"><span class="ln">61   </span></a>        </span><span class="s2">// getting all products from url</span><span class="s1"> 
+<a name="l62"><span class="ln">62   </span></a>        @Override 
+<a name="l63"><span class="ln">63   </span></a>        </span><span class="s0">protected </span><span class="s1">String doInBackground(String... params){ 
+<a name="l64"><span class="ln">64   </span></a>            Log.d(</span><span class="s3">&quot;DEBUGX&quot;</span><span class="s1">, </span><span class="s3">&quot;doInBackgroundX&quot;</span><span class="s1">); 
+<a name="l65"><span class="ln">65   </span></a>            </span><span class="s2">// building parameters</span><span class="s1"> 
+<a name="l66"><span class="ln">66   </span></a>            List&lt;Pair&lt;String, String&gt;&gt; args = </span><span class="s0">new </span><span class="s1">ArrayList&lt;Pair&lt;String, String&gt;&gt;(); 
+<a name="l67"><span class="ln">67   </span></a>            JSONObject jsonObject = </span><span class="s0">null</span><span class="s1">; 
+<a name="l68"><span class="ln">68   </span></a> 
+<a name="l69"><span class="ln">69   </span></a>            </span><span class="s0">try</span><span class="s1">{ 
+<a name="l70"><span class="ln">70   </span></a>                Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;TRY1&quot;</span><span class="s1">); 
+<a name="l71"><span class="ln">71   </span></a>                </span><span class="s2">// getting JSON string from url</span><span class="s1"> 
+<a name="l72"><span class="ln">72   </span></a>                jsonObject = jParser.makeHttpRequest(url_all_products, </span><span class="s3">&quot;GET&quot;</span><span class="s1">, args); 
+<a name="l73"><span class="ln">73   </span></a>            }</span><span class="s0">catch</span><span class="s1">(IOException e){ 
+<a name="l74"><span class="ln">74   </span></a>                Log.d(</span><span class="s3">&quot;Networking&quot;</span><span class="s1">, e.getLocalizedMessage()); 
+<a name="l75"><span class="ln">75   </span></a>                Log.d(</span><span class="s3">&quot;DEBUGX&quot;</span><span class="s1">, e.getLocalizedMessage()); 
+<a name="l76"><span class="ln">76   </span></a>            } 
+<a name="l77"><span class="ln">77   </span></a> 
+<a name="l78"><span class="ln">78   </span></a>            </span><span class="s2">// check your log cat for JSON response</span><span class="s1"> 
+<a name="l79"><span class="ln">79   </span></a>            Log.d(</span><span class="s3">&quot;All products: &quot;</span><span class="s1">, jsonObject.toString()); 
+<a name="l80"><span class="ln">80   </span></a> 
+<a name="l81"><span class="ln">81   </span></a>            </span><span class="s0">try</span><span class="s1">{ 
+<a name="l82"><span class="ln">82   </span></a>                </span><span class="s2">// checking for SUCCESS TAG</span><span class="s1"> 
+<a name="l83"><span class="ln">83   </span></a>                </span><span class="s0">int </span><span class="s1">success = jsonObject.getInt(TAG_SUCCESS); 
+<a name="l84"><span class="ln">84   </span></a>                </span><span class="s0">if</span><span class="s1">(success == </span><span class="s4">1</span><span class="s1">){ 
+<a name="l85"><span class="ln">85   </span></a>                    </span><span class="s2">// product found</span><span class="s1"> 
+<a name="l86"><span class="ln">86   </span></a>                    </span><span class="s2">// getting array of products</span><span class="s1"> 
+<a name="l87"><span class="ln">87   </span></a>                    products = jsonObject.getJSONArray(TAG_PRODUCTS); 
+<a name="l88"><span class="ln">88   </span></a>                    </span><span class="s2">// looping through all products</span><span class="s1"> 
+<a name="l89"><span class="ln">89   </span></a>                    </span><span class="s0">for</span><span class="s1">(</span><span class="s0">int </span><span class="s1">i=</span><span class="s4">0</span><span class="s1">; i&lt;products.length(); i++){ 
+<a name="l90"><span class="ln">90   </span></a>                        JSONObject c = products.getJSONObject(i); 
+<a name="l91"><span class="ln">91   </span></a>                        </span><span class="s2">// storing each json item in variable</span><span class="s1"> 
+<a name="l92"><span class="ln">92   </span></a>                        String id = c.getString(TAG_PID); 
+<a name="l93"><span class="ln">93   </span></a>                        String name = c.getString(TAG_NAME); 
+<a name="l94"><span class="ln">94   </span></a>                        </span><span class="s2">// creating new hashmap</span><span class="s1"> 
+<a name="l95"><span class="ln">95   </span></a>                        HashMap&lt;String, String&gt; map = </span><span class="s0">new </span><span class="s1">HashMap&lt;String, String&gt;(); 
+<a name="l96"><span class="ln">96   </span></a>                        </span><span class="s2">// adding each child node to hashmap key =&gt; value</span><span class="s1"> 
+<a name="l97"><span class="ln">97   </span></a>                        map.put(TAG_PID, id); 
+<a name="l98"><span class="ln">98   </span></a>                        map.put(TAG_NAME, name); 
+<a name="l99"><span class="ln">99   </span></a>                        </span><span class="s2">// adding hashlist to arraylist</span><span class="s1"> 
+<a name="l100"><span class="ln">100  </span></a>                        productsList.add(map); 
+<a name="l101"><span class="ln">101  </span></a>                    } 
+<a name="l102"><span class="ln">102  </span></a>                }</span><span class="s0">else</span><span class="s1">{ 
+<a name="l103"><span class="ln">103  </span></a>                    </span><span class="s2">// no products found</span><span class="s1"> 
+<a name="l104"><span class="ln">104  </span></a>                    </span><span class="s2">// launch add new product activity</span><span class="s1"> 
+<a name="l105"><span class="ln">105  </span></a>                    Intent i = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext(), NewProductActivity.</span><span class="s0">class</span><span class="s1">); 
+<a name="l106"><span class="ln">106  </span></a>                    </span><span class="s2">// closing all previous activities</span><span class="s1"> 
+<a name="l107"><span class="ln">107  </span></a>                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+<a name="l108"><span class="ln">108  </span></a>                    startActivity(i); 
+<a name="l109"><span class="ln">109  </span></a>                } 
+<a name="l110"><span class="ln">110  </span></a> 
+<a name="l111"><span class="ln">111  </span></a>            }</span><span class="s0">catch</span><span class="s1">(JSONException e){ 
+<a name="l112"><span class="ln">112  </span></a>                e.printStackTrace(); 
+<a name="l113"><span class="ln">113  </span></a>            } 
+<a name="l114"><span class="ln">114  </span></a>            </span><span class="s0">return null</span><span class="s1">; 
+<a name="l115"><span class="ln">115  </span></a>        } 
+<a name="l116"><span class="ln">116  </span></a> 
+<a name="l117"><span class="ln">117  </span></a>        </span><span class="s2">// after completing background task, dismiss the progress dialog</span><span class="s1"> 
+<a name="l118"><span class="ln">118  </span></a>        @Override 
+<a name="l119"><span class="ln">119  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPostExecute(String s){ 
+<a name="l120"><span class="ln">120  </span></a>            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;onPostExecute&quot;</span><span class="s1">); 
+<a name="l121"><span class="ln">121  </span></a>            </span><span class="s2">// dismiss the dialog after getting all products</span><span class="s1"> 
+<a name="l122"><span class="ln">122  </span></a>            pDialog.dismiss(); 
+<a name="l123"><span class="ln">123  </span></a> 
+<a name="l124"><span class="ln">124  </span></a>            </span><span class="s2">// updating UI from background thread</span><span class="s1"> 
+<a name="l125"><span class="ln">125  </span></a>            runOnUiThread(</span><span class="s0">new </span><span class="s1">Runnable(){ 
+<a name="l126"><span class="ln">126  </span></a>                @Override 
+<a name="l127"><span class="ln">127  </span></a>                </span><span class="s0">public void </span><span class="s1">run(){ 
+<a name="l128"><span class="ln">128  </span></a>                    </span><span class="s2">// updating parsed JSON data into ListView</span><span class="s1"> 
+<a name="l129"><span class="ln">129  </span></a>                    ListAdapter adapter = </span><span class="s0">new </span><span class="s1">SimpleAdapter(AllProductsActivity.</span><span class="s0">this</span><span class="s1">, productsList, R.layout.list_item, </span><span class="s0">new </span><span class="s1">String[]{TAG_PID, TAG_NAME}, </span><span class="s0">new int</span><span class="s1">[]{R.id.pid, R.id.pName}); 
+<a name="l130"><span class="ln">130  </span></a>                    </span><span class="s2">// updating ListView</span><span class="s1"> 
+<a name="l131"><span class="ln">131  </span></a>                    setListAdapter(adapter); 
+<a name="l132"><span class="ln">132  </span></a>                } 
+<a name="l133"><span class="ln">133  </span></a>            }); 
+<a name="l134"><span class="ln">134  </span></a>        } 
+<a name="l135"><span class="ln">135  </span></a>    } 
+<a name="l136"><span class="ln">136  </span></a> 
+<a name="l137"><span class="ln">137  </span></a>    @Override 
+<a name="l138"><span class="ln">138  </span></a>    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+<a name="l139"><span class="ln">139  </span></a>        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+<a name="l140"><span class="ln">140  </span></a>        setContentView(R.layout.activity_all_products); 
+<a name="l141"><span class="ln">141  </span></a> 
+<a name="l142"><span class="ln">142  </span></a>        Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;TEST&quot;</span><span class="s1">); 
+<a name="l143"><span class="ln">143  </span></a> 
+<a name="l144"><span class="ln">144  </span></a>        </span><span class="s2">// hashmap for ListView</span><span class="s1"> 
+<a name="l145"><span class="ln">145  </span></a>        productsList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;HashMap&lt;String, String&gt;&gt;(); 
+<a name="l146"><span class="ln">146  </span></a>        </span><span class="s2">//loading products in background thread</span><span class="s1"> 
+<a name="l147"><span class="ln">147  </span></a>        </span><span class="s0">new </span><span class="s1">LoadAllProducts().execute(); 
+<a name="l148"><span class="ln">148  </span></a>        </span><span class="s2">// get the ListView</span><span class="s1"> 
+<a name="l149"><span class="ln">149  </span></a>        ListView listView = getListView(); 
+<a name="l150"><span class="ln">150  </span></a>        </span><span class="s2">// on selecting single product</span><span class="s1"> 
+<a name="l151"><span class="ln">151  </span></a>        </span><span class="s2">// launch the edit product screen</span><span class="s1"> 
+<a name="l152"><span class="ln">152  </span></a>        listView.setOnItemClickListener(</span><span class="s0">new </span><span class="s1">AdapterView.OnItemClickListener(){ 
+<a name="l153"><span class="ln">153  </span></a>            @Override 
+<a name="l154"><span class="ln">154  </span></a>            </span><span class="s0">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent, View view, </span><span class="s0">int </span><span class="s1">position, </span><span class="s0">long </span><span class="s1">id){ 
+<a name="l155"><span class="ln">155  </span></a>                </span><span class="s2">// getting values from selected ListItem</span><span class="s1"> 
+<a name="l156"><span class="ln">156  </span></a>                String pid = ((TextView) view.findViewById(R.id.pid)).getText().toString(); 
+<a name="l157"><span class="ln">157  </span></a>                </span><span class="s2">// starting new intent</span><span class="s1"> 
+<a name="l158"><span class="ln">158  </span></a>                Intent i = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext(), EditProductActivity.</span><span class="s0">class</span><span class="s1">); 
+<a name="l159"><span class="ln">159  </span></a>                </span><span class="s2">// sending pid to the next activity</span><span class="s1"> 
+<a name="l160"><span class="ln">160  </span></a>                i.putExtra(TAG_PID, pid); 
+<a name="l161"><span class="ln">161  </span></a>                </span><span class="s2">// starting new activity and expecting some response back</span><span class="s1"> 
+<a name="l162"><span class="ln">162  </span></a>                startActivityForResult(i, </span><span class="s4">100</span><span class="s1">); 
+<a name="l163"><span class="ln">163  </span></a>            } 
+<a name="l164"><span class="ln">164  </span></a>        }); 
+<a name="l165"><span class="ln">165  </span></a>    } 
+<a name="l166"><span class="ln">166  </span></a> 
+<a name="l167"><span class="ln">167  </span></a>    </span><span class="s2">// response from edit product activity</span><span class="s1"> 
+<a name="l168"><span class="ln">168  </span></a>    @Override 
+<a name="l169"><span class="ln">169  </span></a>    </span><span class="s0">protected void </span><span class="s1">onActivityResult(</span><span class="s0">int </span><span class="s1">requestCode, </span><span class="s0">int </span><span class="s1">resultCode, Intent data){ 
+<a name="l170"><span class="ln">170  </span></a>        </span><span class="s0">super</span><span class="s1">.onActivityResult(requestCode, resultCode, data); 
+<a name="l171"><span class="ln">171  </span></a>        </span><span class="s2">// if result code 100</span><span class="s1"> 
+<a name="l172"><span class="ln">172  </span></a>        </span><span class="s0">if</span><span class="s1">(resultCode == </span><span class="s4">100</span><span class="s1">){ 
+<a name="l173"><span class="ln">173  </span></a>            </span><span class="s2">// if resultCode 100 is received means user edited/deleted product</span><span class="s1"> 
+<a name="l174"><span class="ln">174  </span></a>            </span><span class="s2">// reloal this screen again</span><span class="s1"> 
+<a name="l175"><span class="ln">175  </span></a>            Intent i = getIntent(); 
+<a name="l176"><span class="ln">176  </span></a>            finish(); 
+<a name="l177"><span class="ln">177  </span></a>            startActivity(i); 
+<a name="l178"><span class="ln">178  </span></a>        } 
+<a name="l179"><span class="ln">179  </span></a>    } 
+<a name="l180"><span class="ln">180  </span></a>} 
+<a name="l181"><span class="ln">181  </span></a></span></pre>
+</body>
+</html>

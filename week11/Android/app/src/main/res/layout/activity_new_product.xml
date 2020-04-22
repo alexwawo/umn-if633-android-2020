@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="25dp"
+    tools:context=".NewProductActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Product Name"
+        android:textSize="17sp"
+        android:id="@+id/tvAdd"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:singleLine="true"
+        android:id="@+id/inputName"
+        android:layout_below="@id/tvAdd"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="17sp"
+        android:id="@+id/tvPrice"
+        android:layout_below="@id/inputName"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:singleLine="true"
+        android:inputType="numberDecimal"
+        android:id="@+id/inputPrice"
+        android:layout_below="@id/tvPrice"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="17sp"
+        android:id="@+id/tvDesc"
+        android:layout_below="@id/inputPrice"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:lines="4"
+        android:gravity="top"
+        android:id="@+id/inputDesc"
+        android:layout_below="@id/tvDesc"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create New Product"
+        android:id="@+id/btnCreateProduct"
+        android:layout_below="@id/inputDesc"/>
+
+</RelativeLayout>

@@ -1,0 +1,318 @@
+<html>
+<head>
+<title>EditProductActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+EditProductActivity.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">com.alexwawo.w12androidphpmysql; 
+<a name="l2"><span class="ln">2    </span></a> 
+<a name="l3"><span class="ln">3    </span></a></span><span class="s0">import </span><span class="s1">android.app.ProgressDialog; 
+<a name="l4"><span class="ln">4    </span></a></span><span class="s0">import </span><span class="s1">android.content.Intent; 
+<a name="l5"><span class="ln">5    </span></a></span><span class="s0">import </span><span class="s1">android.os.AsyncTask; 
+<a name="l6"><span class="ln">6    </span></a></span><span class="s0">import </span><span class="s1">android.os.StrictMode; 
+<a name="l7"><span class="ln">7    </span></a></span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+<a name="l8"><span class="ln">8    </span></a></span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+<a name="l9"><span class="ln">9    </span></a></span><span class="s0">import </span><span class="s1">android.util.Log; 
+<a name="l10"><span class="ln">10   </span></a></span><span class="s0">import </span><span class="s1">android.util.Pair; 
+<a name="l11"><span class="ln">11   </span></a></span><span class="s0">import </span><span class="s1">android.view.View; 
+<a name="l12"><span class="ln">12   </span></a></span><span class="s0">import </span><span class="s1">android.widget.Button; 
+<a name="l13"><span class="ln">13   </span></a></span><span class="s0">import </span><span class="s1">android.widget.EditText; 
+<a name="l14"><span class="ln">14   </span></a> 
+<a name="l15"><span class="ln">15   </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONArray; 
+<a name="l16"><span class="ln">16   </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONException; 
+<a name="l17"><span class="ln">17   </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONObject; 
+<a name="l18"><span class="ln">18   </span></a> 
+<a name="l19"><span class="ln">19   </span></a></span><span class="s0">import </span><span class="s1">java.io.IOException; 
+<a name="l20"><span class="ln">20   </span></a></span><span class="s0">import </span><span class="s1">java.util.ArrayList; 
+<a name="l21"><span class="ln">21   </span></a></span><span class="s0">import </span><span class="s1">java.util.List; 
+<a name="l22"><span class="ln">22   </span></a> 
+<a name="l23"><span class="ln">23   </span></a></span><span class="s0">public class </span><span class="s1">EditProductActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+<a name="l24"><span class="ln">24   </span></a> 
+<a name="l25"><span class="ln">25   </span></a>    EditText txtName, txtPrice, txtDesc; 
+<a name="l26"><span class="ln">26   </span></a>    Button btnSave, btnDelete; 
+<a name="l27"><span class="ln">27   </span></a>    String pid, name, price, desc; 
+<a name="l28"><span class="ln">28   </span></a> 
+<a name="l29"><span class="ln">29   </span></a>    </span><span class="s2">// progress dialog</span><span class="s1"> 
+<a name="l30"><span class="ln">30   </span></a>    </span><span class="s0">private </span><span class="s1">ProgressDialog pDialog; 
+<a name="l31"><span class="ln">31   </span></a> 
+<a name="l32"><span class="ln">32   </span></a>    </span><span class="s2">// JSON parser class</span><span class="s1"> 
+<a name="l33"><span class="ln">33   </span></a>    JSONParser jsonParser = </span><span class="s0">new </span><span class="s1">JSONParser(); 
+<a name="l34"><span class="ln">34   </span></a> 
+<a name="l35"><span class="ln">35   </span></a>    </span><span class="s2">// single product url</span><span class="s1"> 
+<a name="l36"><span class="ln">36   </span></a>    </span><span class="s0">private static </span><span class="s1">String url_product_details = </span><span class="s3">&quot;http://10.0.2.2/www/android/w12/get_product_details.php&quot;</span><span class="s1">; 
+<a name="l37"><span class="ln">37   </span></a> 
+<a name="l38"><span class="ln">38   </span></a>    </span><span class="s2">// url to update product</span><span class="s1"> 
+<a name="l39"><span class="ln">39   </span></a>    </span><span class="s0">private static </span><span class="s1">String url_update_product = </span><span class="s3">&quot;http://10.0.2.2/www/android/w12/update_product.php&quot;</span><span class="s1">; 
+<a name="l40"><span class="ln">40   </span></a> 
+<a name="l41"><span class="ln">41   </span></a>    </span><span class="s2">// url to delete product</span><span class="s1"> 
+<a name="l42"><span class="ln">42   </span></a>    </span><span class="s0">private static </span><span class="s1">String url_delete_product = </span><span class="s3">&quot;http://10.0.2.2/www/android/w12/delete_product.php&quot;</span><span class="s1">; 
+<a name="l43"><span class="ln">43   </span></a> 
+<a name="l44"><span class="ln">44   </span></a>    </span><span class="s2">// JSON node names</span><span class="s1"> 
+<a name="l45"><span class="ln">45   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_SUCCESS = </span><span class="s3">&quot;success&quot;</span><span class="s1">; 
+<a name="l46"><span class="ln">46   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_PRODUCT = </span><span class="s3">&quot;product&quot;</span><span class="s1">; 
+<a name="l47"><span class="ln">47   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_PID = </span><span class="s3">&quot;pid&quot;</span><span class="s1">; 
+<a name="l48"><span class="ln">48   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_NAME = </span><span class="s3">&quot;name&quot;</span><span class="s1">; 
+<a name="l49"><span class="ln">49   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_PRICE = </span><span class="s3">&quot;price&quot;</span><span class="s1">; 
+<a name="l50"><span class="ln">50   </span></a>    </span><span class="s0">private static final </span><span class="s1">String TAG_DESCRIPTION = </span><span class="s3">&quot;description&quot;</span><span class="s1">; 
+<a name="l51"><span class="ln">51   </span></a> 
+<a name="l52"><span class="ln">52   </span></a>    @Override 
+<a name="l53"><span class="ln">53   </span></a>    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+<a name="l54"><span class="ln">54   </span></a>        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+<a name="l55"><span class="ln">55   </span></a>        setContentView(R.layout.activity_edit_product); 
+<a name="l56"><span class="ln">56   </span></a> 
+<a name="l57"><span class="ln">57   </span></a>        </span><span class="s2">// lazy way to handle strict mode - networkOnMainThreadException</span><span class="s1"> 
+<a name="l58"><span class="ln">58   </span></a>        StrictMode.ThreadPolicy policy = </span><span class="s0">new </span><span class="s1">StrictMode.ThreadPolicy.Builder().permitAll().build(); 
+<a name="l59"><span class="ln">59   </span></a>        StrictMode.setThreadPolicy(policy); 
+<a name="l60"><span class="ln">60   </span></a> 
+<a name="l61"><span class="ln">61   </span></a>        </span><span class="s2">// save and delete button</span><span class="s1"> 
+<a name="l62"><span class="ln">62   </span></a>        btnSave = (Button) findViewById(R.id.btnSave); 
+<a name="l63"><span class="ln">63   </span></a>        btnDelete = (Button) findViewById(R.id.btnDelete); 
+<a name="l64"><span class="ln">64   </span></a> 
+<a name="l65"><span class="ln">65   </span></a>        </span><span class="s2">// getting product details from intent</span><span class="s1"> 
+<a name="l66"><span class="ln">66   </span></a>        Intent i = getIntent(); 
+<a name="l67"><span class="ln">67   </span></a> 
+<a name="l68"><span class="ln">68   </span></a>        </span><span class="s2">// getting product id (pid) from intent</span><span class="s1"> 
+<a name="l69"><span class="ln">69   </span></a>        pid = i.getStringExtra(TAG_PID); 
+<a name="l70"><span class="ln">70   </span></a> 
+<a name="l71"><span class="ln">71   </span></a>        </span><span class="s2">// getting complete product details in background thread</span><span class="s1"> 
+<a name="l72"><span class="ln">72   </span></a>        </span><span class="s0">new </span><span class="s1">GetProductDetails().execute(); 
+<a name="l73"><span class="ln">73   </span></a> 
+<a name="l74"><span class="ln">74   </span></a>        </span><span class="s2">// save button click event</span><span class="s1"> 
+<a name="l75"><span class="ln">75   </span></a>        btnSave.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener(){ 
+<a name="l76"><span class="ln">76   </span></a>            @Override 
+<a name="l77"><span class="ln">77   </span></a>            </span><span class="s0">public void </span><span class="s1">onClick(View v){ 
+<a name="l78"><span class="ln">78   </span></a>                </span><span class="s2">// getting updated data from EditTexts</span><span class="s1"> 
+<a name="l79"><span class="ln">79   </span></a>                name = txtName.getText().toString(); 
+<a name="l80"><span class="ln">80   </span></a>                price = txtPrice.getText().toString(); 
+<a name="l81"><span class="ln">81   </span></a>                desc = txtDesc.getText().toString(); 
+<a name="l82"><span class="ln">82   </span></a>                </span><span class="s2">// starting background task to update product</span><span class="s1"> 
+<a name="l83"><span class="ln">83   </span></a>                </span><span class="s0">new </span><span class="s1">SaveProductDetails().execute(); 
+<a name="l84"><span class="ln">84   </span></a>            } 
+<a name="l85"><span class="ln">85   </span></a>        }); 
+<a name="l86"><span class="ln">86   </span></a> 
+<a name="l87"><span class="ln">87   </span></a>        </span><span class="s2">// delete button click event</span><span class="s1"> 
+<a name="l88"><span class="ln">88   </span></a>        btnDelete.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener(){ 
+<a name="l89"><span class="ln">89   </span></a>            @Override 
+<a name="l90"><span class="ln">90   </span></a>            </span><span class="s0">public void </span><span class="s1">onClick(View v){ 
+<a name="l91"><span class="ln">91   </span></a>                </span><span class="s2">// starting background task to delete product</span><span class="s1"> 
+<a name="l92"><span class="ln">92   </span></a>                </span><span class="s0">new </span><span class="s1">DeleteProduct().execute(); 
+<a name="l93"><span class="ln">93   </span></a>            } 
+<a name="l94"><span class="ln">94   </span></a>        }); 
+<a name="l95"><span class="ln">95   </span></a>    } 
+<a name="l96"><span class="ln">96   </span></a> 
+<a name="l97"><span class="ln">97   </span></a>    </span><span class="s2">// background AsyncTask to get complete product details</span><span class="s1"> 
+<a name="l98"><span class="ln">98   </span></a>    </span><span class="s0">class </span><span class="s1">GetProductDetails </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;String, String, String&gt; { 
+<a name="l99"><span class="ln">99   </span></a>        </span><span class="s2">// before starting background thread, show progress dialog</span><span class="s1"> 
+<a name="l100"><span class="ln">100  </span></a>        @Override 
+<a name="l101"><span class="ln">101  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPreExecute(){ 
+<a name="l102"><span class="ln">102  </span></a>            </span><span class="s0">super</span><span class="s1">.onPreExecute(); 
+<a name="l103"><span class="ln">103  </span></a>            pDialog = </span><span class="s0">new </span><span class="s1">ProgressDialog(EditProductActivity.</span><span class="s0">this</span><span class="s1">); 
+<a name="l104"><span class="ln">104  </span></a>            pDialog.setMessage(</span><span class="s3">&quot;Loading Product Details. Please wait...&quot;</span><span class="s1">); 
+<a name="l105"><span class="ln">105  </span></a>            pDialog.setIndeterminate(</span><span class="s0">false</span><span class="s1">); 
+<a name="l106"><span class="ln">106  </span></a>            pDialog.setCancelable(</span><span class="s0">true</span><span class="s1">); 
+<a name="l107"><span class="ln">107  </span></a>            pDialog.show(); 
+<a name="l108"><span class="ln">108  </span></a>        } 
+<a name="l109"><span class="ln">109  </span></a> 
+<a name="l110"><span class="ln">110  </span></a>        </span><span class="s2">// getting product details using url</span><span class="s1"> 
+<a name="l111"><span class="ln">111  </span></a>        @Override 
+<a name="l112"><span class="ln">112  </span></a>        </span><span class="s0">protected </span><span class="s1">String doInBackground(String... params){ 
+<a name="l113"><span class="ln">113  </span></a>            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;EditProductActivity - doInBackground&quot;</span><span class="s1">); 
+<a name="l114"><span class="ln">114  </span></a>            runOnUiThread(</span><span class="s0">new </span><span class="s1">Runnable(){ 
+<a name="l115"><span class="ln">115  </span></a>                @Override 
+<a name="l116"><span class="ln">116  </span></a>                </span><span class="s0">public void </span><span class="s1">run(){ 
+<a name="l117"><span class="ln">117  </span></a>                    Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;EditProductActivity - runOnUiThread&quot;</span><span class="s1">); 
+<a name="l118"><span class="ln">118  </span></a>                    </span><span class="s2">// check for success tag</span><span class="s1"> 
+<a name="l119"><span class="ln">119  </span></a>                    </span><span class="s0">int </span><span class="s1">success; 
+<a name="l120"><span class="ln">120  </span></a>                    </span><span class="s0">try</span><span class="s1">{ 
+<a name="l121"><span class="ln">121  </span></a>                        </span><span class="s2">// building parameters</span><span class="s1"> 
+<a name="l122"><span class="ln">122  </span></a>                        List&lt;Pair&lt;String, String&gt;&gt; args = </span><span class="s0">new </span><span class="s1">ArrayList&lt;Pair&lt;String, String&gt;&gt;(); 
+<a name="l123"><span class="ln">123  </span></a>                        args.add(</span><span class="s0">new </span><span class="s1">Pair&lt;&gt;(TAG_PID, pid)); 
+<a name="l124"><span class="ln">124  </span></a>                        JSONObject jsonObject = </span><span class="s0">null</span><span class="s1">; 
+<a name="l125"><span class="ln">125  </span></a>                        </span><span class="s0">try</span><span class="s1">{ 
+<a name="l126"><span class="ln">126  </span></a>                            </span><span class="s2">// getting product details by making HTTP request</span><span class="s1"> 
+<a name="l127"><span class="ln">127  </span></a>                            </span><span class="s2">// note that product details url will use GET request</span><span class="s1"> 
+<a name="l128"><span class="ln">128  </span></a>                            jsonObject = jsonParser.makeHttpRequest(url_product_details, </span><span class="s3">&quot;POST&quot;</span><span class="s1">, args); 
+<a name="l129"><span class="ln">129  </span></a>                        }</span><span class="s0">catch</span><span class="s1">(IOException e){ 
+<a name="l130"><span class="ln">130  </span></a>                            Log.d(</span><span class="s3">&quot;Networking&quot;</span><span class="s1">, e.getLocalizedMessage()); 
+<a name="l131"><span class="ln">131  </span></a>                        } 
+<a name="l132"><span class="ln">132  </span></a> 
+<a name="l133"><span class="ln">133  </span></a>                        </span><span class="s2">// check your logcat for JSON response</span><span class="s1"> 
+<a name="l134"><span class="ln">134  </span></a>                        Log.d(</span><span class="s3">&quot;Single product details&quot;</span><span class="s1">, jsonObject.toString()); 
+<a name="l135"><span class="ln">135  </span></a> 
+<a name="l136"><span class="ln">136  </span></a>                        </span><span class="s2">// json success tag</span><span class="s1"> 
+<a name="l137"><span class="ln">137  </span></a>                        success = jsonObject.getInt(TAG_SUCCESS); 
+<a name="l138"><span class="ln">138  </span></a>                        </span><span class="s0">if</span><span class="s1">(success == </span><span class="s4">1</span><span class="s1">){ 
+<a name="l139"><span class="ln">139  </span></a>                            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;Product Found.&quot;</span><span class="s1">); 
+<a name="l140"><span class="ln">140  </span></a>                            </span><span class="s2">// successfully received product details</span><span class="s1"> 
+<a name="l141"><span class="ln">141  </span></a>                            JSONArray productObj = jsonObject.getJSONArray(TAG_PRODUCT); 
+<a name="l142"><span class="ln">142  </span></a> 
+<a name="l143"><span class="ln">143  </span></a>                            </span><span class="s2">// get first product object from JSON array</span><span class="s1"> 
+<a name="l144"><span class="ln">144  </span></a>                            JSONObject product = productObj.getJSONObject(</span><span class="s4">0</span><span class="s1">); 
+<a name="l145"><span class="ln">145  </span></a> 
+<a name="l146"><span class="ln">146  </span></a>                            </span><span class="s2">// product with this pid found</span><span class="s1"> 
+<a name="l147"><span class="ln">147  </span></a>                            </span><span class="s2">// EditText</span><span class="s1"> 
+<a name="l148"><span class="ln">148  </span></a>                            txtName = (EditText) findViewById(R.id.inputName); 
+<a name="l149"><span class="ln">149  </span></a>                            txtPrice = (EditText) findViewById(R.id.inputPrice); 
+<a name="l150"><span class="ln">150  </span></a>                            txtDesc = (EditText) findViewById(R.id.inputDesc); 
+<a name="l151"><span class="ln">151  </span></a> 
+<a name="l152"><span class="ln">152  </span></a>                            </span><span class="s2">// display product data in EditText</span><span class="s1"> 
+<a name="l153"><span class="ln">153  </span></a>                            txtName.setText(product.getString(TAG_NAME)); 
+<a name="l154"><span class="ln">154  </span></a>                            txtPrice.setText(product.getString(TAG_PRICE)); 
+<a name="l155"><span class="ln">155  </span></a>                            txtDesc.setText(product.getString(TAG_DESCRIPTION)); 
+<a name="l156"><span class="ln">156  </span></a>                        }</span><span class="s0">else</span><span class="s1">{ 
+<a name="l157"><span class="ln">157  </span></a>                            </span><span class="s2">// product with this pid not found</span><span class="s1"> 
+<a name="l158"><span class="ln">158  </span></a>                            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;Product Not Found.&quot;</span><span class="s1">); 
+<a name="l159"><span class="ln">159  </span></a>                        } 
+<a name="l160"><span class="ln">160  </span></a>                    }</span><span class="s0">catch</span><span class="s1">(JSONException e){ 
+<a name="l161"><span class="ln">161  </span></a>                        e.printStackTrace(); 
+<a name="l162"><span class="ln">162  </span></a>                    } 
+<a name="l163"><span class="ln">163  </span></a>                } 
+<a name="l164"><span class="ln">164  </span></a>            }); 
+<a name="l165"><span class="ln">165  </span></a>            </span><span class="s0">return null</span><span class="s1">; 
+<a name="l166"><span class="ln">166  </span></a>        } 
+<a name="l167"><span class="ln">167  </span></a> 
+<a name="l168"><span class="ln">168  </span></a>        </span><span class="s2">// after completing background task, dismiss the progress dialog</span><span class="s1"> 
+<a name="l169"><span class="ln">169  </span></a>        @Override 
+<a name="l170"><span class="ln">170  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPostExecute(String s){ 
+<a name="l171"><span class="ln">171  </span></a>            </span><span class="s2">// dismiss the dialog once done</span><span class="s1"> 
+<a name="l172"><span class="ln">172  </span></a>            pDialog.dismiss(); 
+<a name="l173"><span class="ln">173  </span></a>        } 
+<a name="l174"><span class="ln">174  </span></a>    } 
+<a name="l175"><span class="ln">175  </span></a> 
+<a name="l176"><span class="ln">176  </span></a>    </span><span class="s2">// background AsyncTask to save product</span><span class="s1"> 
+<a name="l177"><span class="ln">177  </span></a>    </span><span class="s0">class </span><span class="s1">SaveProductDetails </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;String, String, String&gt;{ 
+<a name="l178"><span class="ln">178  </span></a>        </span><span class="s2">// before starting background thread, show progress dialog</span><span class="s1"> 
+<a name="l179"><span class="ln">179  </span></a>        @Override 
+<a name="l180"><span class="ln">180  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPreExecute(){ 
+<a name="l181"><span class="ln">181  </span></a>            </span><span class="s0">super</span><span class="s1">.onPreExecute(); 
+<a name="l182"><span class="ln">182  </span></a>            pDialog = </span><span class="s0">new </span><span class="s1">ProgressDialog(EditProductActivity.</span><span class="s0">this</span><span class="s1">); 
+<a name="l183"><span class="ln">183  </span></a>            pDialog.setMessage(</span><span class="s3">&quot;Saving Product Details. Please wait...&quot;</span><span class="s1">); 
+<a name="l184"><span class="ln">184  </span></a>            pDialog.setIndeterminate(</span><span class="s0">false</span><span class="s1">); 
+<a name="l185"><span class="ln">185  </span></a>            pDialog.setCancelable(</span><span class="s0">true</span><span class="s1">); 
+<a name="l186"><span class="ln">186  </span></a>            pDialog.show(); 
+<a name="l187"><span class="ln">187  </span></a>        } 
+<a name="l188"><span class="ln">188  </span></a> 
+<a name="l189"><span class="ln">189  </span></a>        </span><span class="s2">// saving product details using url</span><span class="s1"> 
+<a name="l190"><span class="ln">190  </span></a>        @Override 
+<a name="l191"><span class="ln">191  </span></a>        </span><span class="s0">protected </span><span class="s1">String doInBackground(String... params){ 
+<a name="l192"><span class="ln">192  </span></a>            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;SaveProduct - doInBackground&quot;</span><span class="s1">); 
+<a name="l193"><span class="ln">193  </span></a>            </span><span class="s2">// building parameters</span><span class="s1"> 
+<a name="l194"><span class="ln">194  </span></a>            List&lt;Pair&lt;String, String&gt;&gt; args = </span><span class="s0">new </span><span class="s1">ArrayList&lt;Pair&lt;String, String&gt;&gt;(); 
+<a name="l195"><span class="ln">195  </span></a>            args.add(</span><span class="s0">new </span><span class="s1">Pair&lt;&gt;(TAG_PID, pid)); 
+<a name="l196"><span class="ln">196  </span></a>            args.add(</span><span class="s0">new </span><span class="s1">Pair&lt;&gt;(TAG_NAME, name)); 
+<a name="l197"><span class="ln">197  </span></a>            args.add(</span><span class="s0">new </span><span class="s1">Pair&lt;&gt;(TAG_PRICE, price)); 
+<a name="l198"><span class="ln">198  </span></a>            args.add(</span><span class="s0">new </span><span class="s1">Pair&lt;&gt;(TAG_DESCRIPTION, desc)); 
+<a name="l199"><span class="ln">199  </span></a>            JSONObject jsonObject = </span><span class="s0">null</span><span class="s1">; 
+<a name="l200"><span class="ln">200  </span></a>            </span><span class="s0">try</span><span class="s1">{ 
+<a name="l201"><span class="ln">201  </span></a>                </span><span class="s2">// sending modified data through HTTP request</span><span class="s1"> 
+<a name="l202"><span class="ln">202  </span></a>                </span><span class="s2">//notice that update product url accepts POST method</span><span class="s1"> 
+<a name="l203"><span class="ln">203  </span></a>                jsonObject = jsonParser.makeHttpRequest(url_update_product, </span><span class="s3">&quot;POST&quot;</span><span class="s1">, args); 
+<a name="l204"><span class="ln">204  </span></a>            }</span><span class="s0">catch</span><span class="s1">(IOException e){ 
+<a name="l205"><span class="ln">205  </span></a>                Log.d(</span><span class="s3">&quot;Networking&quot;</span><span class="s1">, e.getLocalizedMessage()); 
+<a name="l206"><span class="ln">206  </span></a>            } 
+<a name="l207"><span class="ln">207  </span></a> 
+<a name="l208"><span class="ln">208  </span></a>            </span><span class="s2">// check JSON success tag</span><span class="s1"> 
+<a name="l209"><span class="ln">209  </span></a>            </span><span class="s0">try</span><span class="s1">{ 
+<a name="l210"><span class="ln">210  </span></a>                </span><span class="s0">int </span><span class="s1">success = jsonObject.getInt(TAG_SUCCESS); 
+<a name="l211"><span class="ln">211  </span></a>                </span><span class="s0">if</span><span class="s1">(success == </span><span class="s4">1</span><span class="s1">){ 
+<a name="l212"><span class="ln">212  </span></a>                    </span><span class="s2">// successfully updated</span><span class="s1"> 
+<a name="l213"><span class="ln">213  </span></a>                    Intent i = getIntent(); 
+<a name="l214"><span class="ln">214  </span></a>                    </span><span class="s2">// send result code 100 to notify about product update</span><span class="s1"> 
+<a name="l215"><span class="ln">215  </span></a>                    setResult(</span><span class="s4">100</span><span class="s1">, i); 
+<a name="l216"><span class="ln">216  </span></a>                    finish(); 
+<a name="l217"><span class="ln">217  </span></a>                }</span><span class="s0">else</span><span class="s1">{ 
+<a name="l218"><span class="ln">218  </span></a>                    </span><span class="s2">// failed to update product</span><span class="s1"> 
+<a name="l219"><span class="ln">219  </span></a>                } 
+<a name="l220"><span class="ln">220  </span></a>            }</span><span class="s0">catch</span><span class="s1">(JSONException e){ 
+<a name="l221"><span class="ln">221  </span></a>                e.printStackTrace(); 
+<a name="l222"><span class="ln">222  </span></a>            } 
+<a name="l223"><span class="ln">223  </span></a>            </span><span class="s0">return null</span><span class="s1">; 
+<a name="l224"><span class="ln">224  </span></a>        } 
+<a name="l225"><span class="ln">225  </span></a> 
+<a name="l226"><span class="ln">226  </span></a>        </span><span class="s2">// after completing background task, dismiss the progress dialog</span><span class="s1"> 
+<a name="l227"><span class="ln">227  </span></a>        @Override 
+<a name="l228"><span class="ln">228  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPostExecute(String s){ 
+<a name="l229"><span class="ln">229  </span></a>            </span><span class="s2">// dismiss the dialog once done</span><span class="s1"> 
+<a name="l230"><span class="ln">230  </span></a>            pDialog.dismiss(); 
+<a name="l231"><span class="ln">231  </span></a>        } 
+<a name="l232"><span class="ln">232  </span></a>    } 
+<a name="l233"><span class="ln">233  </span></a> 
+<a name="l234"><span class="ln">234  </span></a>    </span><span class="s2">// background AsyncTask to delete product</span><span class="s1"> 
+<a name="l235"><span class="ln">235  </span></a>    </span><span class="s0">class </span><span class="s1">DeleteProduct </span><span class="s0">extends </span><span class="s1">AsyncTask&lt;String, String, String&gt;{ 
+<a name="l236"><span class="ln">236  </span></a>        </span><span class="s2">// before starting background thread, show progress dialog</span><span class="s1"> 
+<a name="l237"><span class="ln">237  </span></a>        @Override 
+<a name="l238"><span class="ln">238  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPreExecute(){ 
+<a name="l239"><span class="ln">239  </span></a>            </span><span class="s0">super</span><span class="s1">.onPreExecute(); 
+<a name="l240"><span class="ln">240  </span></a>            pDialog = </span><span class="s0">new </span><span class="s1">ProgressDialog(EditProductActivity.</span><span class="s0">this</span><span class="s1">); 
+<a name="l241"><span class="ln">241  </span></a>            pDialog.setMessage(</span><span class="s3">&quot;Deleting Product. Please wait...&quot;</span><span class="s1">); 
+<a name="l242"><span class="ln">242  </span></a>            pDialog.setIndeterminate(</span><span class="s0">false</span><span class="s1">); 
+<a name="l243"><span class="ln">243  </span></a>            pDialog.setCancelable(</span><span class="s0">true</span><span class="s1">); 
+<a name="l244"><span class="ln">244  </span></a>            pDialog.show(); 
+<a name="l245"><span class="ln">245  </span></a>        } 
+<a name="l246"><span class="ln">246  </span></a> 
+<a name="l247"><span class="ln">247  </span></a>        </span><span class="s2">// deleting product using url</span><span class="s1"> 
+<a name="l248"><span class="ln">248  </span></a>        @Override 
+<a name="l249"><span class="ln">249  </span></a>        </span><span class="s0">protected </span><span class="s1">String doInBackground(String... params){ 
+<a name="l250"><span class="ln">250  </span></a>            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;DeleteProduct - doInBackground&quot;</span><span class="s1">); 
+<a name="l251"><span class="ln">251  </span></a>            </span><span class="s2">// builing parameters</span><span class="s1"> 
+<a name="l252"><span class="ln">252  </span></a>            List&lt;Pair&lt;String, String&gt;&gt; args = </span><span class="s0">new </span><span class="s1">ArrayList&lt;Pair&lt;String, String&gt;&gt;(); 
+<a name="l253"><span class="ln">253  </span></a>            args.add(</span><span class="s0">new </span><span class="s1">Pair&lt;&gt;(TAG_PID, pid)); 
+<a name="l254"><span class="ln">254  </span></a>            JSONObject jsonObject = </span><span class="s0">null</span><span class="s1">; 
+<a name="l255"><span class="ln">255  </span></a>            </span><span class="s0">try</span><span class="s1">{ 
+<a name="l256"><span class="ln">256  </span></a>                </span><span class="s2">// getting product details through HTTP request</span><span class="s1"> 
+<a name="l257"><span class="ln">257  </span></a>                </span><span class="s2">// notice that delete product url accepts POST method</span><span class="s1"> 
+<a name="l258"><span class="ln">258  </span></a>                jsonObject = jsonParser.makeHttpRequest(url_delete_product, </span><span class="s3">&quot;POST&quot;</span><span class="s1">, args); 
+<a name="l259"><span class="ln">259  </span></a>                Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;url_delete_product&quot;</span><span class="s1">); 
+<a name="l260"><span class="ln">260  </span></a>            }</span><span class="s0">catch</span><span class="s1">(IOException e){ 
+<a name="l261"><span class="ln">261  </span></a>                Log.d(</span><span class="s3">&quot;Networking&quot;</span><span class="s1">, e.getLocalizedMessage()); 
+<a name="l262"><span class="ln">262  </span></a>            } 
+<a name="l263"><span class="ln">263  </span></a> 
+<a name="l264"><span class="ln">264  </span></a>            </span><span class="s2">// check your logcat for JSON response</span><span class="s1"> 
+<a name="l265"><span class="ln">265  </span></a>            Log.d(</span><span class="s3">&quot;Delete product&quot;</span><span class="s1">, jsonObject.toString()); 
+<a name="l266"><span class="ln">266  </span></a>            Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, jsonObject.toString()); 
+<a name="l267"><span class="ln">267  </span></a>            </span><span class="s2">// check JSON success tag</span><span class="s1"> 
+<a name="l268"><span class="ln">268  </span></a>            </span><span class="s0">try</span><span class="s1">{ 
+<a name="l269"><span class="ln">269  </span></a>                </span><span class="s0">int </span><span class="s1">success = jsonObject.getInt(TAG_SUCCESS); 
+<a name="l270"><span class="ln">270  </span></a>                </span><span class="s0">if</span><span class="s1">(success == </span><span class="s4">1</span><span class="s1">){ 
+<a name="l271"><span class="ln">271  </span></a>                    Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;Delete success.&quot;</span><span class="s1">); 
+<a name="l272"><span class="ln">272  </span></a>                    </span><span class="s2">// successfully deleted</span><span class="s1"> 
+<a name="l273"><span class="ln">273  </span></a>                    </span><span class="s2">// notify previous activity by sending code 100</span><span class="s1"> 
+<a name="l274"><span class="ln">274  </span></a>                    Intent i = getIntent(); 
+<a name="l275"><span class="ln">275  </span></a>                    </span><span class="s2">// send result code 100 to notify about product delete</span><span class="s1"> 
+<a name="l276"><span class="ln">276  </span></a>                    setResult(</span><span class="s4">100</span><span class="s1">, i); 
+<a name="l277"><span class="ln">277  </span></a>                    finish(); 
+<a name="l278"><span class="ln">278  </span></a>                }</span><span class="s0">else</span><span class="s1">{ 
+<a name="l279"><span class="ln">279  </span></a>                    </span><span class="s2">// failed to delete product</span><span class="s1"> 
+<a name="l280"><span class="ln">280  </span></a>                    Log.d(</span><span class="s3">&quot;DEBUG&quot;</span><span class="s1">, </span><span class="s3">&quot;Delete failed.&quot;</span><span class="s1">); 
+<a name="l281"><span class="ln">281  </span></a>                } 
+<a name="l282"><span class="ln">282  </span></a>            }</span><span class="s0">catch</span><span class="s1">(JSONException e){ 
+<a name="l283"><span class="ln">283  </span></a>                e.printStackTrace(); 
+<a name="l284"><span class="ln">284  </span></a>            } 
+<a name="l285"><span class="ln">285  </span></a>            </span><span class="s0">return null</span><span class="s1">; 
+<a name="l286"><span class="ln">286  </span></a>        } 
+<a name="l287"><span class="ln">287  </span></a> 
+<a name="l288"><span class="ln">288  </span></a>        </span><span class="s2">// after completing background task, dismiss the progress dialog</span><span class="s1"> 
+<a name="l289"><span class="ln">289  </span></a>        @Override 
+<a name="l290"><span class="ln">290  </span></a>        </span><span class="s0">protected void </span><span class="s1">onPostExecute(String s){ 
+<a name="l291"><span class="ln">291  </span></a>            </span><span class="s2">// dismiss the dialog once done</span><span class="s1"> 
+<a name="l292"><span class="ln">292  </span></a>            pDialog.dismiss(); 
+<a name="l293"><span class="ln">293  </span></a>        } 
+<a name="l294"><span class="ln">294  </span></a>    } 
+<a name="l295"><span class="ln">295  </span></a> 
+<a name="l296"><span class="ln">296  </span></a>}</span></pre>
+</body>
+</html>

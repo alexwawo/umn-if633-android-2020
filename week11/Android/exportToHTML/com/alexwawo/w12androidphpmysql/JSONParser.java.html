@@ -1,0 +1,133 @@
+<html>
+<head>
+<title>JSONParser.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,128,0); font-weight: bold; }
+.s3 { color: rgb(0,0,255); }
+.s4 { color: rgb(128,128,128); font-style: italic; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+JSONParser.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">com.alexwawo.w12androidphpmysql; 
+<a name="l2"><span class="ln">2    </span></a> 
+<a name="l3"><span class="ln">3    </span></a></span><span class="s0">import </span><span class="s1">android.util.Log; 
+<a name="l4"><span class="ln">4    </span></a></span><span class="s0">import </span><span class="s1">android.util.Pair; 
+<a name="l5"><span class="ln">5    </span></a> 
+<a name="l6"><span class="ln">6    </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONException; 
+<a name="l7"><span class="ln">7    </span></a></span><span class="s0">import </span><span class="s1">org.json.JSONObject; 
+<a name="l8"><span class="ln">8    </span></a> 
+<a name="l9"><span class="ln">9    </span></a></span><span class="s0">import </span><span class="s1">java.io.BufferedReader; 
+<a name="l10"><span class="ln">10   </span></a></span><span class="s0">import </span><span class="s1">java.io.BufferedWriter; 
+<a name="l11"><span class="ln">11   </span></a></span><span class="s0">import </span><span class="s1">java.io.IOException; 
+<a name="l12"><span class="ln">12   </span></a></span><span class="s0">import </span><span class="s1">java.io.InputStream; 
+<a name="l13"><span class="ln">13   </span></a></span><span class="s0">import </span><span class="s1">java.io.InputStreamReader; 
+<a name="l14"><span class="ln">14   </span></a></span><span class="s0">import </span><span class="s1">java.io.OutputStream; 
+<a name="l15"><span class="ln">15   </span></a></span><span class="s0">import </span><span class="s1">java.io.OutputStreamWriter; 
+<a name="l16"><span class="ln">16   </span></a></span><span class="s0">import </span><span class="s1">java.io.UnsupportedEncodingException; 
+<a name="l17"><span class="ln">17   </span></a></span><span class="s0">import </span><span class="s1">java.net.HttpURLConnection; 
+<a name="l18"><span class="ln">18   </span></a></span><span class="s0">import </span><span class="s1">java.net.URL; 
+<a name="l19"><span class="ln">19   </span></a></span><span class="s0">import </span><span class="s1">java.net.URLConnection; 
+<a name="l20"><span class="ln">20   </span></a></span><span class="s0">import </span><span class="s1">java.net.URLEncoder; 
+<a name="l21"><span class="ln">21   </span></a></span><span class="s0">import </span><span class="s1">java.util.List; 
+<a name="l22"><span class="ln">22   </span></a> 
+<a name="l23"><span class="ln">23   </span></a></span><span class="s0">public class </span><span class="s1">JSONParser { 
+<a name="l24"><span class="ln">24   </span></a>    </span><span class="s0">static </span><span class="s1">InputStream inputStream = </span><span class="s0">null</span><span class="s1">; 
+<a name="l25"><span class="ln">25   </span></a>    </span><span class="s0">static </span><span class="s1">JSONObject jsonObject = </span><span class="s0">null</span><span class="s1">; 
+<a name="l26"><span class="ln">26   </span></a>    </span><span class="s0">static </span><span class="s1">String json = </span><span class="s2">&quot;&quot;</span><span class="s1">; 
+<a name="l27"><span class="ln">27   </span></a>    </span><span class="s0">int </span><span class="s1">response = -</span><span class="s3">1</span><span class="s1">; 
+<a name="l28"><span class="ln">28   </span></a> 
+<a name="l29"><span class="ln">29   </span></a>    </span><span class="s4">// constructor</span><span class="s1"> 
+<a name="l30"><span class="ln">30   </span></a>    </span><span class="s0">public </span><span class="s1">JSONParser(){ 
+<a name="l31"><span class="ln">31   </span></a>    } 
+<a name="l32"><span class="ln">32   </span></a> 
+<a name="l33"><span class="ln">33   </span></a>    </span><span class="s4">// function to get JSON from url by making HTTP POST or GET methods</span><span class="s1"> 
+<a name="l34"><span class="ln">34   </span></a>    </span><span class="s0">public </span><span class="s1">JSONObject makeHttpRequest(String url, String method, List&lt;Pair&lt;String, String&gt;&gt; params) </span><span class="s0">throws </span><span class="s1">IOException{ 
+<a name="l35"><span class="ln">35   </span></a>        URL urls = </span><span class="s0">new </span><span class="s1">URL(url); 
+<a name="l36"><span class="ln">36   </span></a>        URLConnection connection = urls.openConnection(); 
+<a name="l37"><span class="ln">37   </span></a> 
+<a name="l38"><span class="ln">38   </span></a>        </span><span class="s0">if</span><span class="s1">(!(connection </span><span class="s0">instanceof </span><span class="s1">HttpURLConnection)) 
+<a name="l39"><span class="ln">39   </span></a>            </span><span class="s0">throw new </span><span class="s1">IOException(</span><span class="s2">&quot;Not an HTTP Connection&quot;</span><span class="s1">); 
+<a name="l40"><span class="ln">40   </span></a> 
+<a name="l41"><span class="ln">41   </span></a>        </span><span class="s0">try</span><span class="s1">{ 
+<a name="l42"><span class="ln">42   </span></a>            HttpURLConnection httpURLConnection = (HttpURLConnection) connection; 
+<a name="l43"><span class="ln">43   </span></a>            httpURLConnection.setAllowUserInteraction(</span><span class="s0">false</span><span class="s1">); 
+<a name="l44"><span class="ln">44   </span></a>            httpURLConnection.setInstanceFollowRedirects(</span><span class="s0">true</span><span class="s1">); 
+<a name="l45"><span class="ln">45   </span></a>            httpURLConnection.setRequestMethod(</span><span class="s2">&quot;POST&quot;</span><span class="s1">); 
+<a name="l46"><span class="ln">46   </span></a>            httpURLConnection.setDoInput(</span><span class="s0">true</span><span class="s1">); 
+<a name="l47"><span class="ln">47   </span></a>            httpURLConnection.setDoOutput(</span><span class="s0">true</span><span class="s1">); 
+<a name="l48"><span class="ln">48   </span></a> 
+<a name="l49"><span class="ln">49   </span></a>            OutputStream outputStream = httpURLConnection.getOutputStream(); 
+<a name="l50"><span class="ln">50   </span></a>            BufferedWriter writer = </span><span class="s0">new </span><span class="s1">BufferedWriter(</span><span class="s0">new </span><span class="s1">OutputStreamWriter(outputStream, </span><span class="s2">&quot;UTF-8&quot;</span><span class="s1">)); 
+<a name="l51"><span class="ln">51   </span></a>            writer.write(getQuery(params)); 
+<a name="l52"><span class="ln">52   </span></a>            writer.flush(); 
+<a name="l53"><span class="ln">53   </span></a>            writer.close(); 
+<a name="l54"><span class="ln">54   </span></a>            outputStream.close(); 
+<a name="l55"><span class="ln">55   </span></a>            httpURLConnection.connect(); 
+<a name="l56"><span class="ln">56   </span></a>            response = httpURLConnection.getResponseCode(); 
+<a name="l57"><span class="ln">57   </span></a> 
+<a name="l58"><span class="ln">58   </span></a>            </span><span class="s0">if</span><span class="s1">(response == HttpURLConnection.HTTP_OK){ 
+<a name="l59"><span class="ln">59   </span></a>                inputStream = httpURLConnection.getInputStream(); 
+<a name="l60"><span class="ln">60   </span></a>            } 
+<a name="l61"><span class="ln">61   </span></a>        }</span><span class="s0">catch </span><span class="s1">(Exception e){ 
+<a name="l62"><span class="ln">62   </span></a>            Log.d(</span><span class="s2">&quot;Networking&quot;</span><span class="s1">, e.getLocalizedMessage()); 
+<a name="l63"><span class="ln">63   </span></a>            </span><span class="s0">throw new </span><span class="s1">IOException(</span><span class="s2">&quot;Error Connecting&quot;</span><span class="s1">); 
+<a name="l64"><span class="ln">64   </span></a>        } 
+<a name="l65"><span class="ln">65   </span></a> 
+<a name="l66"><span class="ln">66   </span></a>        </span><span class="s0">try</span><span class="s1">{ 
+<a name="l67"><span class="ln">67   </span></a>            BufferedReader reader = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(inputStream, </span><span class="s2">&quot;iso-8859-1&quot;</span><span class="s1">), </span><span class="s3">8</span><span class="s1">); 
+<a name="l68"><span class="ln">68   </span></a>            StringBuilder stringBuilder = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
+<a name="l69"><span class="ln">69   </span></a>            String line = </span><span class="s0">null</span><span class="s1">; 
+<a name="l70"><span class="ln">70   </span></a>            </span><span class="s0">while</span><span class="s1">((line = reader.readLine()) != </span><span class="s0">null</span><span class="s1">){ 
+<a name="l71"><span class="ln">71   </span></a>                stringBuilder.append(line + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">); 
+<a name="l72"><span class="ln">72   </span></a>            } 
+<a name="l73"><span class="ln">73   </span></a> 
+<a name="l74"><span class="ln">74   </span></a>            inputStream.close(); 
+<a name="l75"><span class="ln">75   </span></a>            json = stringBuilder.toString(); 
+<a name="l76"><span class="ln">76   </span></a>        }</span><span class="s0">catch </span><span class="s1">(Exception e){ 
+<a name="l77"><span class="ln">77   </span></a>            Log.e(</span><span class="s2">&quot;Buffer error&quot;</span><span class="s1">, </span><span class="s2">&quot;Error converting result &quot; </span><span class="s1">+ e.toString()); 
+<a name="l78"><span class="ln">78   </span></a>        } 
+<a name="l79"><span class="ln">79   </span></a> 
+<a name="l80"><span class="ln">80   </span></a>        </span><span class="s4">// try to parse the string to a JSON object</span><span class="s1"> 
+<a name="l81"><span class="ln">81   </span></a>        </span><span class="s0">try</span><span class="s1">{ 
+<a name="l82"><span class="ln">82   </span></a>            Log.e(</span><span class="s2">&quot;Buffer error&quot;</span><span class="s1">, json); 
+<a name="l83"><span class="ln">83   </span></a>            jsonObject = </span><span class="s0">new </span><span class="s1">JSONObject(json); 
+<a name="l84"><span class="ln">84   </span></a>        }</span><span class="s0">catch</span><span class="s1">(JSONException e){ 
+<a name="l85"><span class="ln">85   </span></a>            Log.e(</span><span class="s2">&quot;JSON Parser&quot;</span><span class="s1">, </span><span class="s2">&quot;Error parsing data &quot; </span><span class="s1">+ e.toString()); 
+<a name="l86"><span class="ln">86   </span></a>        } 
+<a name="l87"><span class="ln">87   </span></a>        </span><span class="s4">// return the JSON string</span><span class="s1"> 
+<a name="l88"><span class="ln">88   </span></a>        </span><span class="s0">return </span><span class="s1">jsonObject; 
+<a name="l89"><span class="ln">89   </span></a> 
+<a name="l90"><span class="ln">90   </span></a>    } 
+<a name="l91"><span class="ln">91   </span></a> 
+<a name="l92"><span class="ln">92   </span></a>    </span><span class="s0">private </span><span class="s1">String getQuery(List&lt;Pair&lt;String, String&gt;&gt; params) </span><span class="s0">throws </span><span class="s1">UnsupportedEncodingException{ 
+<a name="l93"><span class="ln">93   </span></a>        StringBuilder result = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
+<a name="l94"><span class="ln">94   </span></a>        </span><span class="s0">boolean </span><span class="s1">first = </span><span class="s0">true</span><span class="s1">; 
+<a name="l95"><span class="ln">95   </span></a> 
+<a name="l96"><span class="ln">96   </span></a>        </span><span class="s0">for</span><span class="s1">(Pair&lt;String, String&gt; pair : params){ 
+<a name="l97"><span class="ln">97   </span></a>            </span><span class="s0">if</span><span class="s1">(first) 
+<a name="l98"><span class="ln">98   </span></a>                first = </span><span class="s0">false</span><span class="s1">; 
+<a name="l99"><span class="ln">99   </span></a>            </span><span class="s0">else</span><span class="s1"> 
+<a name="l100"><span class="ln">100  </span></a>                result.append(</span><span class="s2">&quot;&amp;&quot;</span><span class="s1">); 
+<a name="l101"><span class="ln">101  </span></a> 
+<a name="l102"><span class="ln">102  </span></a>            result.append(URLEncoder.encode(pair.first, </span><span class="s2">&quot;UTF-8&quot;</span><span class="s1">)); 
+<a name="l103"><span class="ln">103  </span></a>            result.append(</span><span class="s2">&quot;=&quot;</span><span class="s1">); 
+<a name="l104"><span class="ln">104  </span></a>            result.append(URLEncoder.encode(pair.second, </span><span class="s2">&quot;UTF-8&quot;</span><span class="s1">)); 
+<a name="l105"><span class="ln">105  </span></a>        } 
+<a name="l106"><span class="ln">106  </span></a> 
+<a name="l107"><span class="ln">107  </span></a>        </span><span class="s0">return </span><span class="s1">result.toString(); 
+<a name="l108"><span class="ln">108  </span></a>    } 
+<a name="l109"><span class="ln">109  </span></a> 
+<a name="l110"><span class="ln">110  </span></a>} 
+<a name="l111"><span class="ln">111  </span></a></span></pre>
+</body>
+</html>
